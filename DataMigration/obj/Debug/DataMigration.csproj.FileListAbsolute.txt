@@ -1,0 +1,10 @@
+C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\bin\Debug\DataMigration.exe.config
+C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\bin\Debug\DataMigration.exe
+C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\bin\Debug\DataMigration.pdb
+C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\obj\Debug\DataMigration.DatabaseConnectionForm.resources
+C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\obj\Debug\DataMigration.MainForm.resources
+C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\obj\Debug\DataMigration.Properties.Resources.resources
+C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\obj\Debug\DataMigration.ServerDataForm.resources
+C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\obj\Debug\DataMigration.csproj.GenerateResource.Cache
+C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\obj\Debug\DataMigration.exe
+C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\obj\Debug\DataMigration.pdb
