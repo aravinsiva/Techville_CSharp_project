@@ -8,3 +8,4 @@ C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\obj\Debug\DataMigra
 C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\obj\Debug\DataMigration.csproj.GenerateResource.Cache
 C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\obj\Debug\DataMigration.exe
 C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\obj\Debug\DataMigration.pdb
+C:\Users\MoonStar\Desktop\Fiverr\DataMigration\DataMigration\obj\Debug\DataMigration.csprojResolveAssemblyReference.cache

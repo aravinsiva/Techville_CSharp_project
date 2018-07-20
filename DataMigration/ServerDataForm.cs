@@ -24,11 +24,25 @@ namespace DataMigration
             try
             {
                 LoadData();
+                Timer MyTimer = new Timer();
+                MyTimer.Interval = (10 * 60 * 1000); // 10 mins
+                MyTimer.Tick += new EventHandler(MyTimer_Tick);
+                MyTimer.Start();
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
         }
 
-        private void btnUploadData_Click(object sender, EventArgs e)
+        private void MyTimer_Tick(object sender, EventArgs e)
+        {
+            try
+            {
+                DataSave();
+                LoadData();
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+
+        private void DataSave()
         {
             try
             {
@@ -102,11 +116,78 @@ namespace DataMigration
                     catch { }
                 }
 
+
+                DataTable dt3 = new DataTable();
+                MySqlDataAdapter da3 = new MySqlDataAdapter("select * from wpfa_users", DatabaseConnectionForm.mysqlcon);
+                da3.Fill(dt3);
+
+                for (int i = 0; i < dt3.Rows.Count; i++)
+                {
+                    try
+                    {
+                        SqlCommand cmdchk3 = new SqlCommand("select * from wpfa_users Where ID ='" + Convert.ToInt64(dt3.Rows[i]["ID"]) + "' ", DatabaseConnectionForm.con);
+                        DataTable dtchk3 = new DataTable();
+                        SqlDataAdapter dachk3 = new SqlDataAdapter(cmdchk3);
+                        dachk3.Fill(dtchk3);
+
+                        if (dtchk3.Rows.Count == 0)
+                        {
+                            SqlCommand cmd3 = new SqlCommand("insert into wpfa_users (ID,user_login,user_pass,user_nicename,user_email,user_url,user_registered,user_activation_key,user_status,display_name) values (@ID,@user_login,@user_pass,@user_nicename,@user_email,@user_url,@user_registered,@user_activation_key,@user_status,@display_name)", DatabaseConnectionForm.con);
+                            cmd3.Parameters.AddWithValue("@ID", Convert.ToInt64(dt3.Rows[i]["ID"]));
+                            cmd3.Parameters.AddWithValue("@user_login", dt3.Rows[i]["user_login"]);
+                            cmd3.Parameters.AddWithValue("@user_pass", dt3.Rows[i]["user_pass"]);
+                            cmd3.Parameters.AddWithValue("@user_nicename", dt3.Rows[i]["user_nicename"]);
+                            cmd3.Parameters.AddWithValue("@user_email", dt3.Rows[i]["user_email"]);
+                            cmd3.Parameters.AddWithValue("@user_url", dt3.Rows[i]["user_url"]);
+                            cmd3.Parameters.AddWithValue("@user_registered", Convert.ToDateTime(dt3.Rows[i]["user_registered"]));
+                            cmd3.Parameters.AddWithValue("@user_activation_key", dt3.Rows[i]["user_activation_key"]);
+                            cmd3.Parameters.AddWithValue("@user_status", Convert.ToInt32(dt3.Rows[i]["user_status"]));
+                            cmd3.Parameters.AddWithValue("@display_name", dt3.Rows[i]["display_name"]);
+                            cmd3.ExecuteNonQuery();
+                        }
+                        this.Text = "wpfa_users Table Data Checking & Updating....";
+                    }
+
+                    catch { }
+                }
+
+                DataTable dt4 = new DataTable();
+                MySqlDataAdapter da4 = new MySqlDataAdapter("select * from wpfa_usermeta", DatabaseConnectionForm.mysqlcon);
+                da4.Fill(dt4);
+
+                for (int i = 0; i < dt4.Rows.Count; i++)
+                {
+                    try
+                    {
+                        SqlCommand cmdchk4 = new SqlCommand("select * from wpfa_usermeta Where umeta_id ='" + Convert.ToInt64(dt4.Rows[i]["umeta_id"]) + "' ", DatabaseConnectionForm.con);
+                        DataTable dtchk4 = new DataTable();
+                        SqlDataAdapter dachk4 = new SqlDataAdapter(cmdchk4);
+                        dachk4.Fill(dtchk4);
+
+                        if (dtchk4.Rows.Count == 0)
+                        {
+                            SqlCommand cmd4 = new SqlCommand("insert into wpfa_usermeta (umeta_id,user_id,meta_key,meta_value) values (@umeta_id,@user_id,@meta_key,@meta_value)", DatabaseConnectionForm.con);
+                            cmd4.Parameters.AddWithValue("@umeta_id", Convert.ToInt64(dt4.Rows[i]["umeta_id"]));
+                            cmd4.Parameters.AddWithValue("@user_id", Convert.ToInt64(dt4.Rows[i]["user_id"]));
+                            cmd4.Parameters.AddWithValue("@meta_key", dt4.Rows[i]["meta_key"]);
+                            cmd4.Parameters.AddWithValue("@meta_value", dt4.Rows[i]["meta_value"]);
+                            cmd4.ExecuteNonQuery();
+                        }
+                        this.Text = "wpfa_usermeta Table Data Checking & Updating....";
+                    }
+
+                    catch { }
+                }
+
                 this.Text = "Server Data List";
-                MessageBox.Show("Data updating successful","Data Update",MessageBoxButtons.OK,MessageBoxIcon.Information);
+                MessageBox.Show("Data updating successful", "Data Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 LoadData();
             }
             catch (Exception ex) { MessageBox.Show(ex.Message); }
+        }
+        private void btnUploadData_Click(object sender, EventArgs e)
+        {
+           
         }
 
         private void LoadData()
@@ -122,15 +203,28 @@ namespace DataMigration
                 SqlDataAdapter da = new SqlDataAdapter(cmd);
                 da.Fill(dt);
 
-                SqlCommand cmdc = new SqlCommand("select * from wpfa_signups ", DatabaseConnectionForm.con);
+                SqlCommand cmdcus = new SqlCommand("select * from wpfa_signups ", DatabaseConnectionForm.con);
+                DataTable dtcus = new DataTable();
+                SqlDataAdapter dacus = new SqlDataAdapter(cmdcus);
+                dacus.Fill(dtcus);
+
+                SqlCommand cmdc = new SqlCommand("select * from wpfa_users ", DatabaseConnectionForm.con);
                 DataTable dtc = new DataTable();
                 SqlDataAdapter dac = new SqlDataAdapter(cmdc);
                 dac.Fill(dtc);
 
+                SqlCommand cmdm = new SqlCommand("select * from wpfa_usermeta ", DatabaseConnectionForm.con);
+                DataTable dtm = new DataTable();
+                SqlDataAdapter dam = new SqlDataAdapter(cmdm);
+                dam.Fill(dtm);
+
                 lblOrder.Text = dt.Rows.Count.ToString();
                 lblCust.Text = dtc.Rows.Count.ToString();
+                lblUsermeta.Text = dtm.Rows.Count.ToString();
                 dgvOrderList.DataSource = dt;
-                dgvCustomerList.DataSource = dtc;
+                dgvCustomerList.DataSource = dtcus;
+                dgvUserList.DataSource = dtc;
+                dgvMetauser.DataSource = dtm;
             }
             catch { }
         }
